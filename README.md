@@ -5,8 +5,8 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Laravel-12.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
-  <img src="https://img.shields.io/badge/PHP-8.2+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
+  <img src="https://img.shields.io/badge/Laravel-13.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel">
+  <img src="https://img.shields.io/badge/PHP-8.4+-777BB4?style=for-the-badge&logo=php&logoColor=white" alt="PHP">
   <img src="https://img.shields.io/badge/TailwindCSS-v4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="TailwindCSS">
   <img src="https://img.shields.io/badge/Alpine.js-3.x-8BC0D0?style=for-the-badge&logo=alpinedotjs&logoColor=white" alt="Alpine.js">
   <img src="https://img.shields.io/badge/Security-AES--256--CBC-059669?style=for-the-badge&logo=security&logoColor=white" alt="AES-256">
@@ -57,7 +57,7 @@
 
 | Lapisan | Teknologi |
 | :--- | :--- |
-| **Backend Framework** | Laravel 12.x / PHP 8.2+ |
+| **Backend Framework** | Laravel 13.x / PHP 8.4+ |
 | **Basis Data** | MySQL / MariaDB (InnoDB) |
 | **Frontend Styling** | TailwindCSS v4 + Custom Administrative CSS |
 | **Interaktivitas UI** | Alpine.js 3.x |
@@ -70,7 +70,7 @@
 ## 🚀 Panduan Instalasi (Installation Guide)
 
 ### Prasyarat Sistem
-- PHP >= 8.2 (dengan ekstensi `openssl`, `pdo_mysql`, `mbstring`, `curl`, `fileinfo`)
+- PHP >= 8.4 (dengan ekstensi `openssl`, `pdo_mysql`, `mbstring`, `curl`, `fileinfo`)
 - Composer >= 2.x
 - Node.js >= 18.x & NPM
 - MySQL >= 8.0 atau MariaDB >= 10.4
