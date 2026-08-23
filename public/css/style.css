@@ -1,0 +1,112 @@
+/**
+ * ====================================================================
+ * e-Desa Public Portal - Custom Stylesheet
+ * File: public/css/style.css
+ * Description: Typography, TomSelect components & micro-animations
+ * ====================================================================
+ */
+
+/* ── Base Typography & Theme ───────────────────────────────────────── */
+body { 
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0F172A;
+    background-color: #F8FAFC;
+}
+
+.font-serif-accent {
+    font-family: 'Lora', Georgia, serif;
+}
+
+/* ── TomSelect Modern Civic Theme ──────────────────────────────────── */
+.ts-wrapper { 
+    width: 100% !important; 
+    font-family: inherit !important; 
+}
+
+.ts-control {
+    border-radius: 0.75rem !important;
+    border: 1px solid #cbd5e1 !important;
+    padding: 0.55rem 0.85rem !important;
+    font-size: 0.8125rem !important;
+    color: #0f172a !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05) !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.ts-control.focus {
+    border-color: #1d4ed8 !important;
+    box-shadow: 0 0 0 2px rgba(29, 78, 216, 0.2) !important;
+    outline: none !important;
+}
+
+.ts-dropdown {
+    border-radius: 0.75rem !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+    padding: 0.35rem !important;
+    z-index: 9999 !important;
+    background: #ffffff !important;
+}
+
+.ts-dropdown .option {
+    padding: 0.5rem 0.75rem !important;
+    border-radius: 0.5rem !important;
+    font-size: 0.8125rem !important;
+}
+
+.ts-dropdown .option.active {
+    background-color: #eff6ff !important;
+    color: #1d4ed8 !important;
+    font-weight: 600 !important;
+}
+
+/* ── Subtle Micro-Animations & Hover Effects ────────────────────────── */
+/* Subtle Ken Burns Zoom for active hero slider banner */
+@keyframes subtleZoom {
+    0% { transform: scale(1); }
+    100% { transform: scale(1.04); }
+}
+
+.animate-subtle-zoom {
+    animation: subtleZoom 9s ease-out forwards;
+}
+
+/* Gentle floating animation */
+@keyframes floatSlow {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-4px); }
+}
+
+.animate-float-slow {
+    animation: floatSlow 3.5s ease-in-out infinite;
+}
+
+/* Hover lift micro-interaction for cards */
+.hover-lift {
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hover-lift:hover {
+    transform: translateY(-3px);
+}
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F1F5F9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #CBD5E1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94A3B8;
+}
