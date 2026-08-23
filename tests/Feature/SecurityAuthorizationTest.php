@@ -42,4 +42,16 @@ class SecurityAuthorizationTest extends TestCase
         $response->assertSessionHas('error');
         $this->assertDatabaseHas('user', ['id' => $superAdminUser->id]);
     }
+
+    public function test_security_headers_are_present_on_web_responses()
+    {
+        $response = $this->get(route('public.home'));
+
+        $response->assertStatus(200);
+        $response->assertHeader('X-Frame-Options', 'SAMEORIGIN');
+        $response->assertHeader('X-Content-Type-Options', 'nosniff');
+        $response->assertHeader('X-XSS-Protection', '1; mode=block');
+        $response->assertHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
+        $response->assertHeader('Permissions-Policy', 'camera=(), microphone=(), geolocation=(self)');
+    }
 }

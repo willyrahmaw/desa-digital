@@ -17,6 +17,10 @@ return Application::configure(basePath: dirname(__DIR__))
             users: '/admin/dashboard'
         );
 
+        $middleware->web(append: [
+            \App\Http\Middleware\SecurityHeadersMiddleware::class,
+        ]);
+
         $middleware->alias([
             'role' => \App\Http\Middleware\RoleMiddleware::class,
         ]);
