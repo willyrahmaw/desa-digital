@@ -43,7 +43,7 @@
     <div class="min-h-screen flex flex-col lg:flex-row">
 
         <!-- ========================================================================= -->
-        <!-- SISI KIRI (50% Desktop): Background Ilustrasi & Teks Murni               -->
+        <!-- SISI KIRI (50% Desktop): Background Ilustrasi & Tipografi Murni           -->
         <!-- ========================================================================= -->
         <div class="relative hidden lg:flex lg:w-1/2 min-h-screen overflow-hidden bg-slate-950">
             <!-- Background Image -->
@@ -56,14 +56,31 @@
             <div class="absolute inset-0 bg-emerald-950/15 backdrop-blur-[0.5px]"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-950/30"></div>
 
-            <!-- Content: Hanya Teks Saja -->
-            <div class="relative z-10 flex flex-col justify-end w-full p-12 lg:p-16 text-white space-y-2">
-                <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                    Sistem Informasi Desa
-                </h3>
-                <p class="text-base lg:text-lg text-slate-200 font-medium leading-relaxed">
-                    Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
-                </p>
+            <!-- Content Container: Tata Letak Teks Murni (Tanpa Border / Box) -->
+            <div class="relative z-10 flex flex-col justify-between w-full p-12 lg:p-16 text-white">
+                
+                <!-- Atas: Info Instansi Desa -->
+                <div>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-400 block">Pemerintah Desa</span>
+                    <h2 class="text-sm font-extrabold tracking-tight text-white mt-0.5">{{ $namaDesa }} {{ $kabupaten ? '• ' . $kabupaten : '' }}</h2>
+                </div>
+
+                <!-- Tengah / Bawah: Judul & Tagline Utama -->
+                <div class="space-y-2 max-w-lg">
+                    <span class="text-xs font-semibold text-emerald-300 uppercase tracking-wider block">Portal Resmi Administrasi Desa</span>
+                    <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                        Sistem Informasi Desa
+                    </h3>
+                    <p class="text-base lg:text-lg text-slate-200 font-medium leading-relaxed pt-1">
+                        Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
+                    </p>
+                </div>
+
+                <!-- Bawah: Catatan Standar -->
+                <div class="flex items-center justify-between text-xs text-emerald-200/60 font-medium">
+                    <span>Standar Tata Naskah Dinas Permendagri</span>
+                    <span>v2.5 • Terintegrasi</span>
+                </div>
             </div>
         </div>
 
