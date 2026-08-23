@@ -43,7 +43,10 @@ class BeritaService
             $data['gambar'] = $path;
         }
 
-        return $this->beritaRepository->create($data);
+        $berita = $this->beritaRepository->create($data);
+        SitemapService::generate();
+
+        return $berita;
     }
 
     public function update(int $id, array $data): bool
@@ -57,13 +60,19 @@ class BeritaService
                 $data['gambar'] = $path;
             }
 
-            return $record->update($data);
+            $updated = $record->update($data);
+            SitemapService::generate();
+
+            return $updated;
         }
         return false;
     }
 
     public function delete(int $id): bool
     {
-        return $this->beritaRepository->delete($id);
+        $deleted = $this->beritaRepository->delete($id);
+        SitemapService::generate();
+
+        return $deleted;
     }
 }

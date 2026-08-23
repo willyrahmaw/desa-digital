@@ -60,31 +60,14 @@ Route::get('/verifikasi/{uuid}', [VerifikasiController::class, 'verify'])->name(
 
 // SEO Sitemap & Robots
 Route::get('/sitemap.xml', function () {
-    $beritas = \App\Models\Berita::latest()->get();
-    
-    $xml = '<?xml version="1.0" encoding="UTF-8"?>';
-    $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
-    $xml .= '<url><loc>' . url('/') . '</loc><changefreq>daily</changefreq><priority>1.0</priority></url>';
-    $xml .= '<url><loc>' . route('public.profil') . '</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>';
-    $xml .= '<url><loc>' . route('public.layanan') . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-    $xml .= '<url><loc>' . route('public.berita.index') . '</loc><changefreq>daily</changefreq><priority>0.9</priority></url>';
-    
-    foreach ($beritas as $berita) {
-        $xml .= '<url><loc>' . route('public.berita.show', $berita->slug ?? $berita->id) . '</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>';
+    $sitemapPath = public_path('sitemap.xml');
+    if (!file_exists($sitemapPath)) {
+        \App\Services\SitemapService::generate();
     }
-    
-    $xml .= '<url><loc>' . route('public.agenda') . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-    $xml .= '<url><loc>' . route('public.umkm') . '</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>';
-    $xml .= '<url><loc>' . route('public.galeri') . '</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>';
-    $xml .= '<url><loc>' . route('public.pengaduan.index') . '</loc><changefreq>daily</changefreq><priority>0.9</priority></url>';
-    $xml .= '</urlset>';
-
-    return response($xml, 200)->header('Content-Type', 'text/xml');
-});
-
-Route::get('/robots.txt', function () {
-    $robots = "User-agent: *\nDisallow: /admin/\nAllow: /\nSitemap: " . url('/sitemap.xml');
-    return response($robots, 200)->header('Content-Type', 'text/plain');
+    return response()->file($sitemapPath, [
+        'Content-Type' => 'application/xml; charset=UTF-8',
+        'X-Robots-Tag' => 'noindex, follow',
+    ]);
 });
 
 /*
