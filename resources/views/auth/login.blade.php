@@ -43,7 +43,7 @@
     <div class="min-h-screen flex flex-col lg:flex-row">
 
         <!-- ========================================================================= -->
-        <!-- SISI KIRI (50% Desktop): Background Ilustrasi, Overlay & Branding        -->
+        <!-- SISI KIRI (50% Desktop): Background Ilustrasi & Teks Murni               -->
         <!-- ========================================================================= -->
         <div class="relative hidden lg:flex lg:w-1/2 min-h-screen overflow-hidden bg-slate-950">
             <!-- Background Image -->
@@ -52,48 +52,18 @@
                  class="absolute inset-0 h-full w-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out hover:scale-100">
 
             <!-- Deep Ambient Overlays -->
-            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-emerald-950/40"></div>
-            <div class="absolute inset-0 bg-emerald-950/20 backdrop-blur-[0.5px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-emerald-950/30"></div>
+            <div class="absolute inset-0 bg-emerald-950/15 backdrop-blur-[0.5px]"></div>
             <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-950/30"></div>
 
-            <!-- Content Container -->
-            <div class="relative z-10 flex flex-col justify-between w-full p-12 lg:p-16 text-white">
-                
-                <!-- Top Brand Badge -->
-                <div class="flex items-center gap-3">
-                    <div class="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-emerald-400 shadow-sm">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                        </svg>
-                    </div>
-                    <div>
-                        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-300 block">Pemerintah Desa</span>
-                        <h2 class="text-sm font-extrabold tracking-tight text-white">{{ $namaDesa }} {{ $kabupaten ? '• ' . $kabupaten : '' }}</h2>
-                    </div>
-                </div>
-
-                <!-- Bottom Text Overlay -->
-                <div class="space-y-4 max-w-lg">
-                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
-                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                        Portal Resmi Administrasi Desa
-                    </div>
-
-                    <div class="space-y-2">
-                        <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
-                            Sistem Informasi Desa
-                        </h3>
-                        <p class="text-base lg:text-lg text-slate-200 font-medium leading-relaxed">
-                            Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Footer Note -->
-                <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-emerald-200/60 font-medium">
-                    <span>Standar Tata Naskah Dinas Permendagri</span>
-                    <span>v2.5 • Terintegrasi</span>
-                </div>
+            <!-- Content: Hanya Teks Saja -->
+            <div class="relative z-10 flex flex-col justify-end w-full p-12 lg:p-16 text-white space-y-2">
+                <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                    Sistem Informasi Desa
+                </h3>
+                <p class="text-base lg:text-lg text-slate-200 font-medium leading-relaxed">
+                    Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
+                </p>
             </div>
         </div>
 
