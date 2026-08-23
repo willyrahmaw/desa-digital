@@ -1,18 +1,20 @@
 @php
     try {
         $loginSettings = \App\Models\Pengaturan::pluck('value', 'key')->toArray();
-        $namaDesa = $loginSettings['nama_desa'] ?? 'Desa Digital';
+        $namaDesa = $loginSettings['nama_desa'] ?? 'Desa Candraloka';
+        $kabupaten = $loginSettings['kabupaten'] ?? '';
     } catch(\Exception $e) {
         $loginSettings = [];
-        $namaDesa = 'Desa Digital';
+        $namaDesa = 'Desa Candraloka';
+        $kabupaten = '';
     }
 @endphp
 <!DOCTYPE html>
-<html lang="id" class="h-full bg-white">
+<html lang="id" class="h-full bg-slate-50/50">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Sistem Informasi Desa</title>
+    <title>Masuk Sistem — E-Desa {{ $namaDesa }}</title>
 
     @if(!empty($loginSettings['favicon']))
         <link rel="icon" href="{{ asset('storage/' . $loginSettings['favicon']) }}">
@@ -32,117 +34,187 @@
 
     <style>
         body {
-            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+            font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
         }
     </style>
 </head>
-<body class="h-full antialiased text-slate-800 bg-white" x-data="{ showPassword: false }">
+<body class="h-full antialiased text-slate-800 bg-slate-50/50 selection:bg-emerald-500 selection:text-white" x-data="{ showPassword: false, showForgotModal: false }">
 
     <div class="min-h-screen flex flex-col lg:flex-row">
 
-        <!-- ========================================== -->
-        <!-- SISI KIRI: 50% LAYAR (GAMBAR & TEKS)       -->
-        <!-- ========================================== -->
-        <div class="relative hidden lg:flex lg:w-1/2 min-h-screen overflow-hidden bg-slate-900">
+        <!-- ========================================================================= -->
+        <!-- SISI KIRI (50% Desktop): Background Ilustrasi, Overlay & Branding        -->
+        <!-- ========================================================================= -->
+        <div class="relative hidden lg:flex lg:w-1/2 min-h-screen overflow-hidden bg-slate-950">
             <!-- Background Image -->
             <img src="{{ asset('bg.png') }}" 
                  alt="Sistem Informasi Desa" 
-                 class="absolute inset-0 h-full w-full object-cover">
+                 class="absolute inset-0 h-full w-full object-cover object-center transform scale-105 transition-transform duration-1000 ease-out hover:scale-100">
 
-            <!-- Overlay Gradient Gelap Elegan -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20"></div>
+            <!-- Deep Ambient Overlays -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/65 to-emerald-950/40"></div>
+            <div class="absolute inset-0 bg-emerald-950/20 backdrop-blur-[0.5px]"></div>
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-950/30"></div>
 
-            <!-- Teks Di Atas Gambar -->
-            <div class="relative z-10 flex flex-col justify-end w-full p-12 lg:p-16 text-white space-y-2">
-                <h3 class="text-3xl font-extrabold tracking-tight text-white">
-                    Sistem Informasi Desa
-                </h3>
-                <p class="text-base text-slate-200 font-medium">
-                    Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
-                </p>
-            </div>
-        </div>
-
-        <!-- ========================================== -->
-        <!-- SISI KANAN: 50% LAYAR (FORM LOGIN)         -->
-        <!-- ========================================== -->
-        <div class="flex-1 flex flex-col justify-center min-h-screen p-6 sm:p-12 lg:p-16 bg-white">
-            <div class="w-full max-w-sm mx-auto space-y-8">
+            <!-- Content Container -->
+            <div class="relative z-10 flex flex-col justify-between w-full p-12 lg:p-16 text-white">
                 
-                <!-- Header: Logo, Judul & Deskripsi -->
-                <div class="space-y-3">
-                    <div class="flex items-center">
-                        @if(!empty($loginSettings['logo_desa']))
-                            <img src="{{ asset('storage/' . $loginSettings['logo_desa']) }}" alt="Logo Desa" class="h-12 w-12 object-contain">
-                        @else
-                            <div class="h-11 w-11 rounded-xl bg-emerald-600 text-white font-black text-lg flex items-center justify-center shadow-xs">
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
-                                </svg>
-                            </div>
-                        @endif
+                <!-- Top Brand Badge -->
+                <div class="flex items-center gap-3">
+                    <div class="h-10 w-10 rounded-xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-emerald-400 shadow-sm">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-300 block">Pemerintah Desa</span>
+                        <h2 class="text-sm font-extrabold tracking-tight text-white">{{ $namaDesa }} {{ $kabupaten ? '• ' . $kabupaten : '' }}</h2>
+                    </div>
+                </div>
+
+                <!-- Bottom Text Overlay -->
+                <div class="space-y-4 max-w-lg">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-xs font-semibold">
+                        <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                        Portal Resmi Administrasi Desa
                     </div>
 
-                    <div class="space-y-1">
-                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
-                            Selamat Datang 👋
-                        </h1>
-                        <p class="text-sm text-slate-500">
-                            Silakan masuk ke akun Anda untuk melanjutkan.
+                    <div class="space-y-2">
+                        <h3 class="text-3xl lg:text-4xl font-extrabold tracking-tight text-white leading-tight">
+                            Sistem Informasi Desa
+                        </h3>
+                        <p class="text-base lg:text-lg text-slate-200 font-medium leading-relaxed">
+                            Melayani Desa dengan Lebih Cepat, Modern, dan Terintegrasi
                         </p>
                     </div>
                 </div>
 
-                <!-- Alert Error -->
-                @if ($errors->any())
-                    <div class="p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm">
-                        {{ $errors->first() }}
-                    </div>
-                @endif
+                <!-- Footer Note -->
+                <div class="pt-4 border-t border-white/10 flex items-center justify-between text-xs text-emerald-200/60 font-medium">
+                    <span>Standar Tata Naskah Dinas Permendagri</span>
+                    <span>v2.5 • Terintegrasi</span>
+                </div>
+            </div>
+        </div>
 
+        <!-- ========================================================================= -->
+        <!-- SISI KANAN (50% Desktop): Form Login Modern & Premium                    -->
+        <!-- ========================================================================= -->
+        <div class="flex-1 flex flex-col justify-between min-h-screen p-6 sm:p-10 lg:p-16 bg-white overflow-y-auto">
+            
+            <!-- Top Bar Navigation -->
+            <div class="flex items-center justify-between w-full max-w-sm mx-auto">
+                <a href="{{ route('public.home') }}" class="inline-flex items-center gap-2 text-xs font-semibold text-slate-500 hover:text-emerald-700 transition-colors group">
+                    <svg class="w-4 h-4 text-slate-400 group-hover:text-emerald-600 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                    </svg>
+                    <span>Ke Beranda</span>
+                </a>
+
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-slate-50 border border-slate-200 text-slate-600 text-[11px] font-semibold">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                    Sistem Aktif
+                </span>
+            </div>
+
+            <!-- Form Card Wrapper -->
+            <div class="w-full max-w-sm mx-auto my-auto py-8">
+                
+                <!-- Brand / Logo & Greetings -->
+                <div class="space-y-3 mb-8">
+                    <div class="inline-flex p-3 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-700 shadow-xs">
+                        @if(!empty($loginSettings['logo_desa']))
+                            <img src="{{ asset('storage/' . $loginSettings['logo_desa']) }}" alt="Logo {{ $namaDesa }}" class="h-8 w-8 object-contain">
+                        @else
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/>
+                            </svg>
+                        @endif
+                    </div>
+
+                    <div class="space-y-1">
+                        <h1 class="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+                            <span>Selamat Datang</span>
+                            <span class="inline-block hover:rotate-12 transition-transform cursor-default">👋</span>
+                        </h1>
+                        <p class="text-xs sm:text-sm text-slate-500 font-medium">
+                            Silakan masukkan kredensial akun Anda untuk masuk ke sistem.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Flash Notifications -->
                 @if (session('success'))
-                    <div class="p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs sm:text-sm">
-                        {{ session('success') }}
+                    <div class="mb-5 p-3.5 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs flex items-center gap-2.5 shadow-xs">
+                        <svg class="w-4 h-4 text-emerald-600 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>{{ session('success') }}</span>
                     </div>
                 @endif
 
-                <!-- Form Login -->
-                <form class="space-y-5" action="{{ route('login') }}" method="POST">
+                @if ($errors->any())
+                    <div class="mb-5 p-3.5 rounded-xl bg-rose-50 border border-rose-200 text-rose-800 text-xs flex items-start gap-2.5 shadow-xs">
+                        <svg class="w-4 h-4 text-rose-600 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        <span>{{ $errors->first() }}</span>
+                    </div>
+                @endif
+
+                <!-- Login Form -->
+                <form class="space-y-4" action="{{ route('login') }}" method="POST">
                     @csrf
 
-                    <!-- Input Email / Username -->
+                    <!-- Email / Username -->
                     <div class="space-y-1.5">
-                        <label for="email" class="block text-xs font-semibold text-slate-700">
+                        <label for="email" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
                             Email atau Username
                         </label>
-                        <input id="email" 
-                               name="email" 
-                               type="text" 
-                               autocomplete="username" 
-                               required 
-                               value="{{ old('email') }}"
-                               placeholder="Masukkan email atau username"
-                               class="block w-full rounded-xl border border-slate-300 px-3.5 py-2.5 text-sm text-slate-900 bg-white placeholder-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none transition-all">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"/>
+                                </svg>
+                            </div>
+                            <input id="email" 
+                                   name="email" 
+                                   type="text" 
+                                   autocomplete="username" 
+                                   required 
+                                   value="{{ old('email') }}"
+                                   placeholder="nama@desa.id"
+                                   class="block w-full rounded-xl border border-slate-300 pl-10 pr-4 py-2.5 text-sm text-slate-900 bg-white placeholder-slate-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none transition-all">
+                        </div>
                     </div>
 
-                    <!-- Input Password dengan Show/Hide -->
+                    <!-- Password -->
                     <div class="space-y-1.5">
-                        <label for="password" class="block text-xs font-semibold text-slate-700">
-                            Password
-                        </label>
+                        <div class="flex items-center justify-between">
+                            <label for="password" class="block text-xs font-bold text-slate-700 uppercase tracking-wider">
+                                Kata Sandi
+                            </label>
+                            <button type="button" 
+                                    @click="showForgotModal = true"
+                                    class="text-xs font-semibold text-emerald-700 hover:text-emerald-800 hover:underline transition-colors">
+                                Lupa Password?
+                            </button>
+                        </div>
                         <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                                </svg>
+                            </div>
                             <input id="password" 
                                    name="password" 
                                    :type="showPassword ? 'text' : 'password'" 
                                    autocomplete="current-password" 
                                    required 
-                                   placeholder="Masukkan password"
-                                   class="block w-full rounded-xl border border-slate-300 px-3.5 pr-10 py-2.5 text-sm text-slate-900 bg-white placeholder-slate-400 focus:border-emerald-600 focus:ring-2 focus:ring-emerald-600/20 focus:outline-none transition-all">
+                                   placeholder="••••••••"
+                                   class="block w-full rounded-xl border border-slate-300 pl-10 pr-10 py-2.5 text-sm text-slate-900 bg-white placeholder-slate-400 focus:border-emerald-600 focus:ring-4 focus:ring-emerald-500/10 focus:outline-none transition-all">
                             
+                            <!-- Show/Hide Button -->
                             <button type="button" 
                                     @click="showPassword = !showPassword" 
-                                    class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer"
-                                    title="Show/Hide Password">
+                                    class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 focus:outline-none transition-colors cursor-pointer"
+                                    title="Tampilkan / Sembunyikan Password">
                                 <template x-if="!showPassword">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -158,31 +230,84 @@
                         </div>
                     </div>
 
-                    <!-- Checkbox Ingat Saya & Lupa Password -->
-                    <div class="flex items-center justify-between text-xs">
-                        <label class="flex items-center gap-2 cursor-pointer select-none">
+                    <!-- Remember Me -->
+                    <div class="flex items-center justify-between pt-0.5">
+                        <label class="flex items-center gap-2 cursor-pointer select-none group">
                             <input id="remember" 
                                    name="remember" 
                                    type="checkbox" 
                                    {{ old('remember') ? 'checked' : '' }}
-                                   class="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-600/30 accent-emerald-600 cursor-pointer">
-                            <span class="text-slate-600">Ingat saya</span>
+                                   class="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500/30 accent-emerald-600 transition-colors cursor-pointer">
+                            <span class="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors">Ingat saya</span>
                         </label>
-                        <a href="javascript:void(0)" onclick="alert('Silakan hubungi Administrator kantor desa untuk mereset kata sandi akun Anda.')" class="font-semibold text-emerald-700 hover:text-emerald-800 hover:underline">
-                            Lupa Password?
-                        </a>
                     </div>
 
-                    <!-- Tombol Utama Masuk ke Sistem -->
-                    <button type="submit"
-                            class="w-full rounded-xl bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-emerald-700 focus:ring-4 focus:ring-emerald-600/20 focus:outline-none transition-all duration-150 cursor-pointer">
-                        Masuk ke Sistem
-                    </button>
+                    <!-- Submit Button -->
+                    <div class="pt-2">
+                        <button type="submit"
+                                class="w-full inline-flex items-center justify-center gap-2 rounded-xl bg-emerald-600 px-4 py-3 text-sm font-bold text-white shadow-md shadow-emerald-600/20 hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-700/25 focus:ring-4 focus:ring-emerald-500/20 focus:outline-none transition-all duration-150 cursor-pointer active:scale-[0.99]">
+                            <span>Masuk ke Sistem</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </div>
                 </form>
 
             </div>
+
+            <!-- Footer Bottom -->
+            <div class="w-full max-w-sm mx-auto pt-6 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
+                <span>© {{ date('Y') }} {{ $namaDesa }}</span>
+                <span class="flex items-center gap-1">
+                    <svg class="w-3 h-3 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+                    Aman & Terenkripsi
+                </span>
+            </div>
         </div>
 
+    </div>
+
+    <!-- Modal Lupa Password -->
+    <div x-show="showForgotModal" 
+         x-cloak 
+         class="fixed inset-0 z-50 overflow-y-auto bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+        
+        <div @click.away="showForgotModal = false" 
+             class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 space-y-4">
+            
+            <div class="flex items-center justify-between">
+                <div class="flex items-center gap-3">
+                    <div class="w-9 h-9 rounded-xl bg-amber-50 text-amber-600 border border-amber-200 flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+                    </div>
+                    <div>
+                        <h4 class="font-extrabold text-slate-900 text-sm">Pemulihan Kata Sandi</h4>
+                        <span class="text-[11px] text-slate-500">Prosedur Keamanan Sistem Desa</span>
+                    </div>
+                </div>
+                <button type="button" @click="showForgotModal = false" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <div class="space-y-2 text-xs text-slate-600 leading-relaxed bg-slate-50 p-3.5 rounded-xl border border-slate-200">
+                <p>
+                    Reset kata sandi akun dilakukan secara terpusat oleh <strong>Administrator</strong> kantor desa untuk menjaga keamanan data warga.
+                </p>
+                <p>
+                    Silakan hubungi Administrator atau Sekdes di Kantor Desa untuk pembaruan kata sandi.
+                </p>
+            </div>
+
+            <div class="flex justify-end pt-1">
+                <button type="button" 
+                        @click="showForgotModal = false"
+                        class="px-4 py-2 rounded-xl bg-slate-900 text-white font-bold text-xs hover:bg-slate-800 transition-colors">
+                    Tutup
+                </button>
+            </div>
+        </div>
     </div>
 
 </body>
