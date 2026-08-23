@@ -59,6 +59,12 @@ class UserManagementController extends Controller
         ]);
 
         $user = User::findOrFail($id);
+
+        if ($user->id === auth()->id() && !$request->has('status_aktif')) {
+            return redirect()->route('admin.user.index')
+                ->with('error', 'Anda tidak dapat menonaktifkan status akun Anda sendiri.');
+        }
+
         $data = [
             'name' => $request->name,
             'email' => $request->email,
@@ -79,6 +85,24 @@ class UserManagementController extends Controller
     public function destroy($id): RedirectResponse
     {
         $user = User::findOrFail($id);
+
+        if ($user->id === auth()->id()) {
+            return redirect()->route('admin.user.index')
+                ->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
+        }
+
+        // Prevent deleting the last Super Admin
+        if ($user->role && $user->role->name === 'super-admin') {
+            $superAdminCount = User::whereHas('role', function($q) {
+                $q->where('name', 'super-admin');
+            })->count();
+
+            if ($superAdminCount <= 1) {
+                return redirect()->route('admin.user.index')
+                    ->with('error', 'Tidak dapat menghapus Super Admin terakhir di dalam sistem.');
+            }
+        }
+
         $user->delete();
 
         return redirect()->route('admin.user.index')

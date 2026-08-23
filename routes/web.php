@@ -48,11 +48,11 @@ Route::name('public.')->group(function () {
     Route::get('/umkm', [PublicController::class, 'umkm'])->name('umkm');
     Route::get('/galeri', [PublicController::class, 'galeri'])->name('galeri');
     
-    // Pengaduan Public Routes
+    // Pengaduan Public Routes (Rate-limited to prevent abuse/enumeration)
     Route::get('/pengaduan', [PublicPengaduanController::class, 'index'])->name('pengaduan.index');
-    Route::post('/pengaduan', [PublicPengaduanController::class, 'store'])->name('pengaduan.store');
-    Route::post('/pengaduan/check-nik', [PublicPengaduanController::class, 'checkNik'])->name('pengaduan.check_nik');
-    Route::post('/pengaduan/track', [PublicPengaduanController::class, 'trackStatus'])->name('pengaduan.track');
+    Route::post('/pengaduan', [PublicPengaduanController::class, 'store'])->name('pengaduan.store')->middleware('throttle:10,1');
+    Route::post('/pengaduan/check-nik', [PublicPengaduanController::class, 'checkNik'])->name('pengaduan.check_nik')->middleware('throttle:15,1');
+    Route::post('/pengaduan/track', [PublicPengaduanController::class, 'trackStatus'])->name('pengaduan.track')->middleware('throttle:15,1');
 });
 
 // Verification Route
@@ -89,12 +89,12 @@ Route::get('/robots.txt', function () {
 
 /*
 |--------------------------------------------------------------------------
-| Guest Routes (Auth Login)
+| Guest Routes (Auth Login with Rate Limiting)
 |--------------------------------------------------------------------------
 */
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:5,1');
 });
 
 /*
@@ -103,8 +103,8 @@ Route::middleware('guest')->group(function () {
 |--------------------------------------------------------------------------
 */
 Route::middleware('auth')->group(function () {
+    // Logout must be POST only with CSRF protection
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
-    Route::get('/logout', [AuthController::class, 'logout']);
 
     Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -146,14 +146,17 @@ Route::middleware('auth')->group(function () {
             Route::delete('parameter/{type}/{id}', [ParameterController::class, 'destroy'])->name('parameter.destroy');
         });
 
-        Route::resource('user', UserManagementController::class)->except(['create', 'show', 'edit']);
-        Route::get('audit', [AuditLogController::class, 'index'])->name('audit.index');
-        Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
-        Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
+        // Protected Super-Admin Routes
+        Route::middleware('role:super-admin')->group(function () {
+            Route::resource('user', UserManagementController::class)->except(['create', 'show', 'edit']);
+            Route::get('audit', [AuditLogController::class, 'index'])->name('audit.index');
+            Route::get('settings', [SettingsController::class, 'index'])->name('settings.index');
+            Route::post('settings', [SettingsController::class, 'update'])->name('settings.update');
 
-        Route::prefix('settings')->name('settings.')->group(function () {
-            Route::resource('penomoran', PengaturanPenomoranController::class)->except(['create', 'show', 'edit']);
-            Route::post('penomoran/preview', [PengaturanPenomoranController::class, 'preview'])->name('penomoran.preview');
+            Route::prefix('settings')->name('settings.')->group(function () {
+                Route::resource('penomoran', PengaturanPenomoranController::class)->except(['create', 'show', 'edit']);
+                Route::post('penomoran/preview', [PengaturanPenomoranController::class, 'preview'])->name('penomoran.preview');
+            });
         });
     });
 });

@@ -69,6 +69,11 @@ class BeritaController extends Controller
 
     public function uploadImage(Request $request): JsonResponse
     {
+        $request->validate([
+            'upload' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+            'files.*' => ['nullable', 'file', 'image', 'mimes:jpeg,png,jpg,webp', 'max:5120'],
+        ]);
+
         $file = $request->file('upload') ?? $request->file('files');
         if (is_array($file)) {
             $file = $file[0] ?? null;
@@ -91,7 +96,7 @@ class BeritaController extends Controller
             'uploaded' => false,
             'isSuccess' => false,
             'error' => [
-                'message' => 'Gagal mengunggah foto. Silakan coba lagi.'
+                'message' => 'Gagal mengunggah foto. Pastikan format file adalah JPG, PNG, atau WEBP (Maksimal 5MB).'
             ]
         ], 400);
     }

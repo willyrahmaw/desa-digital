@@ -120,12 +120,20 @@ class PublicService
             ];
         }
 
+        // Mask name and address for privacy protection (UU PDP compliance)
+        $namaParts = explode(' ', $penduduk->nama);
+        $maskedNama = implode(' ', array_map(function($part) {
+            $len = mb_strlen($part);
+            if ($len <= 2) return $part;
+            return mb_substr($part, 0, 2) . str_repeat('*', max(1, $len - 2));
+        }, $namaParts));
+
         return [
             'success' => true,
             'data' => [
                 'nik' => $penduduk->nik,
-                'nama' => $penduduk->nama,
-                'alamat' => $penduduk->alamat ?? 'Alamat Desa',
+                'nama' => $maskedNama,
+                'alamat' => $penduduk->alamat ? (mb_substr($penduduk->alamat, 0, 8) . '***') : 'Alamat Desa Terdaftar',
                 'rt' => $penduduk->rt->nomor_rt ?? '-',
                 'rw' => $penduduk->rt->rw->nomor_rw ?? '-',
                 'dusun' => $penduduk->rt->rw->dusun->nama ?? '-',
