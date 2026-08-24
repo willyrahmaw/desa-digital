@@ -458,7 +458,7 @@
                     <div x-show="open" @click.outside="open = false"
                          class="absolute right-0 z-50 mt-1 w-44 rounded-lg border border-slate-200 bg-white py-1 text-sm shadow-lg"
                          style="display:none;">
-                        <a href="#" class="block px-4 py-2 text-slate-700 hover:bg-slate-50">Profil Saya</a>
+                        <a href="{{ route('admin.profile.edit') }}" class="block px-4 py-2 text-slate-700 hover:bg-slate-50 transition-colors">Profil Saya</a>
                         <a href="{{ route('admin.settings.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-slate-50">Pengaturan</a>
                         <div class="my-1 border-t border-slate-100"></div>
                         <form action="{{ route('logout') }}" method="POST">

@@ -53,6 +53,11 @@ class User extends Authenticatable
         return $this->belongsTo(Penduduk::class, 'penduduk_nik', 'nik');
     }
 
+    public function perangkatDesa(): \Illuminate\Database\Eloquent\Relations\HasOne
+    {
+        return $this->hasOne(PerangkatDesa::class, 'user_id');
+    }
+
     public function hasPermission(string $permissionName): bool
     {
         if (!$this->role) {
