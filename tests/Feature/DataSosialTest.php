@@ -32,11 +32,10 @@ class DataSosialTest extends TestCase
         ]);
 
         $response1->assertRedirect(route('admin.master.data_social.index'));
-        $this->assertDatabaseHas('data_sosial', [
-            'penduduk_nik' => $penduduk->nik,
-            'dtks' => 1,
-            'pkh' => 1,
-        ]);
+        $data1 = DataSosial::where('penduduk_nik', $penduduk->nik)->first();
+        $this->assertNotNull($data1);
+        $this->assertTrue((bool)$data1->dtks);
+        $this->assertTrue((bool)$data1->pkh);
 
         // Store second time for SAME NIK (should update, not crash with duplicate entry)
         $response2 = $this->post(route('admin.master.data_social.store'), [
@@ -48,10 +47,9 @@ class DataSosialTest extends TestCase
         ]);
 
         $response2->assertRedirect(route('admin.master.data_social.index'));
-        $this->assertDatabaseHas('data_sosial', [
-            'penduduk_nik' => $penduduk->nik,
-            'bpnt' => 1,
-            'keterangan' => 'Uji coba pembaruan data'
-        ]);
+        $data2 = DataSosial::where('penduduk_nik', $penduduk->nik)->first();
+        $this->assertNotNull($data2);
+        $this->assertTrue((bool)$data2->bpnt);
+        $this->assertEquals('Uji coba pembaruan data', $data2->keterangan);
     }
 }

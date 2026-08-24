@@ -14,7 +14,16 @@ class StoreDataSosialRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'penduduk_nik' => ['required', 'string', 'max:20', 'exists:penduduk,nik'],
+            'penduduk_nik' => [
+                'required', 
+                'string', 
+                'max:20', 
+                function ($attribute, $value, $fail) {
+                    if (!\App\Models\Penduduk::where('nik', $value)->exists()) {
+                        $fail('NIK Penduduk tidak terdaftar.');
+                    }
+                }
+            ],
             'dtks' => ['boolean'],
             'pkh' => ['boolean'],
             'bpnt' => ['boolean'],

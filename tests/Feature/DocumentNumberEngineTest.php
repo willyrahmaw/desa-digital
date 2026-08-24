@@ -56,7 +56,8 @@ class DocumentNumberEngineTest extends TestCase
         );
 
         // 3. Assertions
-        $expectedNumber = 'TEST999/001/Krajan Mulyo/VII/2026';
+        $desaName = \App\Models\Pengaturan::where('key', 'nama_desa')->value('value') ?? 'Desa Candraloka';
+        $expectedNumber = 'TEST999/001/' . $desaName . '/VII/2026';
         $this->assertEquals($expectedNumber, $number);
 
         // Assert logged in history

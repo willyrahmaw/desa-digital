@@ -18,7 +18,7 @@ abstract class BaseRepository implements BaseRepositoryInterface
 
     public function all(): Collection
     {
-        return $this->model->all();
+        return $this->model->newQuery()->get();
     }
 
     public function paginate(int $perPage = 15, array $relations = [], array $filters = []): LengthAwarePaginator

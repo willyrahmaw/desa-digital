@@ -37,20 +37,14 @@ class SktmDataSosialSyncTest extends TestCase
 
         // Store new SKTM request
         $surat = $suratService->store([
-            'template_surat_id' => $template->id,
+            'template_id' => $template->id,
             'penduduk_nik' => $penduduk->nik,
-            'keperluan' => 'Permohonan Bantuan Beasiswa',
-        ]);
-
-        // Assert DataSosial record exists and layak_sktm is true
-        $this->assertDatabaseHas('data_sosial', [
-            'penduduk_nik' => $penduduk->nik,
-            'layak_sktm' => 1,
+            'meta_data' => ['keperluan' => 'Permohonan Bantuan Beasiswa'],
         ]);
 
         $dataSosial = DataSosial::where('penduduk_nik', $penduduk->nik)->first();
         $this->assertNotNull($dataSosial);
         $this->assertTrue((bool)$dataSosial->layak_sktm);
-        $this->assertStringContainsString('SKTM', $dataSosial->keterangan);
+        $this->assertStringContainsString('SKTM', (string)$dataSosial->keterangan);
     }
 }

@@ -34,18 +34,21 @@ class DataSosial extends Model
         'keterangan',
     ];
 
-    protected $casts = [
-        'dtks' => 'boolean',
-        'pkh' => 'boolean',
-        'bpnt' => 'boolean',
-        'pbi' => 'boolean',
-        'rtlh' => 'boolean',
-        'lansia' => 'boolean',
-        'yatim_piatu' => 'boolean',
-        'layak_sktm' => 'boolean',
-        'desil' => 'integer',
-        'tanggal_verifikasi' => 'date',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'dtks' => 'boolean',
+            'pkh' => 'boolean',
+            'bpnt' => 'boolean',
+            'pbi' => 'boolean',
+            'rtlh' => 'boolean',
+            'lansia' => 'boolean',
+            'yatim_piatu' => 'boolean',
+            'layak_sktm' => 'boolean',
+            'desil' => 'integer',
+            'tanggal_verifikasi' => 'date',
+        ];
+    }
 
     public static array $desilKemensosMap = [
         1  => ['label' => 'Desil 1 - Sangat Miskin', 'desc' => '10% Rumah tangga dengan tingkat kesejahteraan terendah secara nasional (Prioritas Bansos PKH/BPNT).'],
