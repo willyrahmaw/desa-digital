@@ -108,7 +108,7 @@ class WargaStatistikSeeder extends Seeder
         $createdPenduduks = [];
 
         for ($kkIndex = 1; $kkIndex <= 25; $kkIndex++) {
-            $noKk = sprintf('350711%02d0000%02d', 12, $kkIndex);
+            $noKk = sprintf('00000102%02d00%04d', 99, $kkIndex);
             $location = $rts[$kkIndex % count($rts)];
 
             $kk = KartuKeluarga::firstOrCreate(
@@ -123,7 +123,7 @@ class WargaStatistikSeeder extends Seeder
 
             // Head of Family (Male)
             $priaName = $priaNames[($kkIndex - 1) % count($priaNames)];
-            $nikSuami = sprintf('35071112%02d9000%02d', 12, $kkIndex);
+            $nikSuami = sprintf('00000102%02d00%04d', 10, $kkIndex);
             $priaBirthDate = Carbon::now()->subYears(rand(28, 65))->subDays(rand(1, 300))->toDateString();
             $photoIndexPria = (($kkIndex - 1) % 10) + 1;
 
@@ -158,7 +158,7 @@ class WargaStatistikSeeder extends Seeder
 
             // Wife (Female)
             $wanitaName = $wanitaNames[($kkIndex - 1) % count($wanitaNames)];
-            $nikIstri = sprintf('35071120%02d9000%02d', 12, $kkIndex);
+            $nikIstri = sprintf('00000102%02d00%04d', 20, $kkIndex);
             $wanitaBirthDate = Carbon::now()->subYears(rand(25, 60))->subDays(rand(1, 300))->toDateString();
             $photoIndexWanita = (($kkIndex - 1) % 10) + 1;
 

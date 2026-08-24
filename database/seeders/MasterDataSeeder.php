@@ -50,7 +50,7 @@ class MasterDataSeeder extends Seeder
 
         // 5. Seed a Family Card
         $kk1 = KartuKeluarga::firstOrCreate(
-            ['no_kk' => '3507111212000001'],
+            ['no_kk' => '0000010299000001'],
             [
                 'alamat' => 'Jl. Lembah Cahaya No. 10',
                 'dusun_id' => $d1->id,
@@ -61,7 +61,7 @@ class MasterDataSeeder extends Seeder
 
         // 6. Seed a Resident
         $p1 = Penduduk::firstOrCreate(
-            ['nik' => '3507111212900001'],
+            ['nik' => '0000010200010001'],
             [
                 'no_kk' => $kk1->no_kk,
                 'nama' => 'Budi Santoso',
@@ -90,7 +90,7 @@ class MasterDataSeeder extends Seeder
 
         // 8. Seed another Resident (female)
         $p2 = Penduduk::firstOrCreate(
-            ['nik' => '3507111212900002'],
+            ['nik' => '0000010200020001'],
             [
                 'no_kk' => $kk1->no_kk,
                 'nama' => 'Siti Aminah',

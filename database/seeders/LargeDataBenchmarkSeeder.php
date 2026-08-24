@@ -103,7 +103,6 @@ class LargeDataBenchmarkSeeder extends Seeder
 
         $pendudukChunk = [];
         $totalPenduduk = 3000;
-        $baseNik = (int)($batchTag . rand(10, 99) . '00000000');
 
         for ($p = 1; $p <= $totalPenduduk; $p++) {
             $jk = ($p % 2 == 0) ? 'L' : 'P';
@@ -117,7 +116,7 @@ class LargeDataBenchmarkSeeder extends Seeder
             $dusunId = $rt->rw->dusun_id ?? $dusunIds[0];
 
             $pendudukChunk[] = [
-                'nik' => (string)($baseNik + $p),
+                'nik' => sprintf('00000102%08d', $p),
                 'nama' => $namaLengkap,
                 'jenis_kelamin' => $jk,
                 'tempat_lahir' => $kotaLahir[array_rand($kotaLahir)],
