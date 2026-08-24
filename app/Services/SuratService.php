@@ -48,6 +48,22 @@ class SuratService
         $data['uuid'] = (string) Str::uuid();
         $data['status_pengajuan'] = $data['status_pengajuan'] ?? 'Pending';
         $data['tanggal_pengajuan'] = now()->toDateString();
+
+        if (isset($data['template_surat_id']) && !isset($data['template_id'])) {
+            $data['template_id'] = $data['template_surat_id'];
+        }
+
+        $metaData = $data['meta_data'] ?? [];
+        if (!empty($data['keperluan'])) {
+            $metaData['keperluan'] = $data['keperluan'];
+        }
+        if (!empty($data['form_data'])) {
+            $formData = is_string($data['form_data']) ? json_decode($data['form_data'], true) : $data['form_data'];
+            if (is_array($formData)) {
+                $metaData = array_merge($metaData, $formData);
+            }
+        }
+        $data['meta_data'] = $metaData;
         
         $verifyUrl = route('public.verifikasi', $data['uuid']);
         $data['qr_code_path'] = "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=" . urlencode($verifyUrl);

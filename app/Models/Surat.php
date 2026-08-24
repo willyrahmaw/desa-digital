@@ -36,7 +36,6 @@ class Surat extends Model
         'signed_at',
         'signed_by_perangkat_id',
         'ttd_oleh_perangkat_id',
-        'keperluan',
         'meta_data',
     ];
 
@@ -48,7 +47,14 @@ class Surat extends Model
 
     public function getKeperluanAttribute(): ?string
     {
-        return $this->attributes['keperluan'] ?? ($this->meta_data['keperluan'] ?? ($this->meta_data['keterangan'] ?? null));
+        return $this->meta_data['keperluan'] ?? ($this->meta_data['keterangan'] ?? null);
+    }
+
+    public function setKeperluanAttribute($value): void
+    {
+        $meta = $this->meta_data ?? [];
+        $meta['keperluan'] = $value;
+        $this->attributes['meta_data'] = json_encode($meta);
     }
 
     protected static function boot()
