@@ -209,7 +209,7 @@
                     @if($user->perangkatDesa)
                         <div class="flex justify-between py-1.5 border-b border-slate-50">
                             <span class="text-slate-500">Jabatan Dinas</span>
-                            <span class="font-bold text-slate-800">{{ $user->perangkatDesa->jabatan ?? '-' }}</span>
+                            <span class="font-bold text-slate-800">{{ $user->perangkatDesa->jabatan?->nama ?? $user->perangkatDesa->nama_jabatan ?? '-' }}</span>
                         </div>
                     @endif
 

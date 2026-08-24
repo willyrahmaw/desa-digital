@@ -19,7 +19,7 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = Auth::user();
-        $user->load(['role', 'perangkatDesa']);
+        $user->load(['role', 'perangkatDesa.jabatan']);
         
         return view('admin.profile.index', compact('user'));
     }
